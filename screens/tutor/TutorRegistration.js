@@ -1,14 +1,13 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Button,Image } from 'react-native'
+import { StyleSheet, Text, TextInput, View, TouchableOpacity,Image } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
 import { auth, db } from '../firebase'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/core'
 import { doc, setDoc, addDoc, collection } from "firebase/firestore"; 
-import RoleScreen from '../RoleScreen';
 import * as ImagePicker from 'expo-image-picker';
 import {Ionicons} from "@expo/vector-icons";
-import StudentLoginScreen from '../student/StudentLoginScreen';
+
 
 
 
@@ -287,8 +286,7 @@ const TutorRegistration = () => {
           alignItems: 'center',
       },
       buttonOutline: {
-          backgroundColor: '#dce2cb',
-          marginTop: 1,
+          backgroundColor: '#08352b',
           width: '100%',
           padding: 15, 
           borderRadius: 10, 
@@ -301,7 +299,7 @@ const TutorRegistration = () => {
           fontSize: 16, 
       },
       buttonOutlineText: {
-          color: '#08352b',
+          color: '#ffffff',
           fontWeight: '700',
           fontSize: 16, 
       
@@ -336,6 +334,7 @@ const TutorRegistration = () => {
         borderRadius: 50, 
         alignItems: 'center',
         marginTop: 10,
+        marginBottom: 20,
         justifyContent: "center",
         alignItems: "center",
        },

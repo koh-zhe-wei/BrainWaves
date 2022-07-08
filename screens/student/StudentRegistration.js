@@ -1,10 +1,13 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, TextInput, View, TouchableOpacity,Image } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
 import { auth, db } from '../firebase'
 import { createUserWithEmailAndPassword, reauthenticateWithCredential } from "firebase/auth";
 import { useNavigation } from '@react-navigation/core'
 import { addDoc, collection, Firestore } from "firebase/firestore"; 
+import * as ImagePicker from 'expo-image-picker';
+import {Ionicons} from "@expo/vector-icons";
+
 
 
 
@@ -22,9 +25,10 @@ const StudentRegistration = () => {
   const [neededSub, setNeededSub] = useState('')
   const [priceRange, setPriceRange] = useState('')
   const [availSchedule , setAvailSchedule] = useState('')
+  const [image , setImage] = useState('')
  
   const navigation = useNavigation();
-  var additionalData = [fullName,phoneNumber,birthday,gender,race,region,neededSub,priceRange,availSchedule,photoURL]
+  var additionalData = [fullName,phoneNumber,birthday,gender,race,region,neededSub,priceRange,availSchedule]
 
   const handleSignUp =  () => {
         createUserWithEmailAndPassword(auth,email,password)
@@ -79,7 +83,7 @@ const StudentRegistration = () => {
               neededSubject:neededSub,
               priceRange:priceRange, 
               availSchedule:availSchedule,
-              photoURL:photoURL,
+              image:image,
 
           }); 
           console.log("user data added");
@@ -93,13 +97,55 @@ const StudentRegistration = () => {
         await navigation.replace("StudentLogin")
         .catch(error => alert(error.message))
     }
-    
+    useEffect(() => {
+      (async () => {
+        if (Platform.OS !== 'web') {
+          const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+          if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions to make this work!');
+          }
+        }
+      })();
+    }, []);
+  
+    const pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [7, 10],
+        quality: 1,
+      });
+  
+      console.log(result);
+  
+      if (!result.cancelled) {
+        setImage(result.uri);
+      }
+    };
+
     return (
         <KeyboardAvoidingView
           style={styles.container}
           behavior="padding"
         >
-          <Text style={styles.titleHeader}>Create An Account</Text>
+          <View 
+              style={{alignItems:"center",justifyContent:"center" }}>
+                <TouchableOpacity
+                title="Upload Image" 
+                image = "https://www.vectorstock.com/royalty-free-vectors/avatar-placeholder-vectors"
+                onPress={pickImage}
+                style={styles.avatarPlaceholder} > 
+               <Image source={{ uri: image }} style={styles.avatar} />
+                <Ionicons
+                name="ios-add"
+                size={40}
+                color="FFF"
+                style={{ marginTop:10, marginLeft:2 }}
+                ></Ionicons>
+                
+                </TouchableOpacity>
+                
+              </View> 
           <View style={styles.inputContainer}> 
           <TextInput 
               placeholder="Full Name as on NRIC"
@@ -220,7 +266,7 @@ const StudentRegistration = () => {
         width: '60%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 40,
+        marginTop: 20,
     },
     button: {
         backgroundColor: '#b4c3d3',
@@ -230,8 +276,7 @@ const StudentRegistration = () => {
         alignItems: 'center',
     },
     buttonOutline: {
-        backgroundColor: '#b4c3d3',
-        marginTop: 5,
+        backgroundColor: '#03254c',
         width: '100%',
         padding: 15, 
         borderRadius: 10, 
@@ -241,10 +286,10 @@ const StudentRegistration = () => {
     buttonText: {
         color: '#ffffff',
         fontWeight: '700',
-        fontSize: 16, 
+        fontSize: 19, 
     },
     buttonOutlineText: {
-        color: '#08352b',
+        color: '#ffffff',
         fontWeight: '700',
         fontSize: 16, 
     
@@ -257,20 +302,31 @@ const StudentRegistration = () => {
     },
 
     buttonNew: {
-        backgroundColor: '#b4c3d3',
+        backgroundColor: '#03254c',
         width: '40%',
         padding: 15, 
         borderRadius: 10, 
         alignItems: 'center',
         marginTop: 20,
     },
-    titleHeader: {
-      color: '#000000',
-      fontWeight: '800',
-      fontSize: 26, 
+     avatarPlaceholder: {
+      backgroundColor: '#e1e2e9',
+      width: 100,
+      height: 100,
+      borderRadius: 50, 
       alignItems: 'center',
-      marginBottom: 3,
-  
+      marginTop: 10,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom:20,
      },
+     avatar: {
+      position:"absolute",
+      width: 100,
+      height: 100,
+      borderRadius: 50, 
+      
+      
+     }
     
     })

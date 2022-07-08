@@ -160,7 +160,7 @@ const HomeScreen = () => {
                         <View key={card.id} style={tw("bg-white h-3/4 rounded-xl")}>
                             <Image
                                 style={tw("absolute top-0 h-full w-full rounded-xl")}
-                                source={{ uri: card.photoURL }}
+                                source={{ uri: card.image }}
                             />
 
                             <View style={[tw("absolute bottom-0 bg-white w-full flex-row justify-between items-center h-20 px-6 py-2 rounded-b-xl"
