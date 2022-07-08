@@ -16,9 +16,7 @@ const RoleScreen = () => {
         navigation.replace("StudentLogin")
         .catch(error => alert(error.message))
     }
-
     
-
     const goToTutor = async () => {
         //await setDoc(doc(db,"tutor"))
         navigation.replace("TutorLogin")
@@ -51,6 +49,7 @@ const RoleScreen = () => {
 
           <Text style={styles.buttonOutlineText}>Tutor</Text>
         </TouchableOpacity>
+        
         
     </View>
         

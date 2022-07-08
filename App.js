@@ -46,6 +46,7 @@ export default function App() {
             <Stack.Screen name="TutorRegistration" component={TutorRegistration} />
             <Stack.Screen name="Modal" component={ModalScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
+            
             </>
           )}
       </Stack.Navigator>
