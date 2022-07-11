@@ -1,19 +1,18 @@
 import { StyleSheet, Text, TextInput, View, TouchableOpacity,Image } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
-import { auth, db } from '../firebase'
+import { auth, db, storage } from '../firebase'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/core'
-import { doc, setDoc, addDoc, collection } from "firebase/firestore"; 
+import { addDoc, collection, Firestore } from "firebase/firestore"; 
 import * as ImagePicker from 'expo-image-picker';
 import {Ionicons} from "@expo/vector-icons";
-
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 
 
 
 const TutorRegistration = () => {
-
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [fullName, setFullName] = useState('')
@@ -27,6 +26,7 @@ const TutorRegistration = () => {
     const [priceRange, setPriceRange] = useState('')
     const [availSchedule , setAvailSchedule] = useState('')
     const [image , setImage] = useState('')
+    const [progress , setProgress] = useState(0)
   
     const navigation = useNavigation();
     var additionalData = [fullName,phoneNumber,birthday,gender,race,region,employment,type,priceRange,availSchedule]
@@ -72,6 +72,9 @@ const TutorRegistration = () => {
         const type = additionalData[7]; 
         const priceRange = additionalData[8]; 
         const availSchedule = additionalData[9]; 
+        uploadImage(image,user.uid);
+
+        console.log(image);
 
         console.log("check"); 
         try { 
@@ -88,7 +91,7 @@ const TutorRegistration = () => {
                 type: type, 
                 priceRange:priceRange, 
                 availSchedule:availSchedule,
-                image:image,
+                image: `images/${user.uid}`,
 
             }); 
             console.log("user data added");
@@ -126,8 +129,26 @@ const TutorRegistration = () => {
         if (!result.cancelled) {
           setImage(result.uri);
         }
+       
       };
-    
+
+      const uploadImage = (pic,id) => { 
+        if (!pic) return; 
+        const storageRef = ref(storage,`images/${id}`);
+        const uploadTask = uploadBytesResumable(storageRef, pic);
+        uploadTask.on("state-changed", (snapshot)  => { 
+          const prog = Math.round(
+            (snapshot.bytesTransferred/snapshot.totalBytes) * 100 
+          );
+          setProgress(progress);
+        },
+        (err) => console.log(err),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => console.log(url));
+
+        }
+        )
+      }
       
       
       return (

@@ -13,7 +13,7 @@ import {Ionicons} from "@expo/vector-icons";
 
 const StudentRegistration = () => {
 
-  const [photoURL, setPhotoURL] = useState('')
+  
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
@@ -67,7 +67,7 @@ const StudentRegistration = () => {
       const neededSub = additionalData[6]; 
       const priceRange = additionalData[7]; 
       const availSchedule = additionalData[8]; 
-      const photoURL = additionalData[9];
+      
 
       console.log("check"); 
       try { 
@@ -213,12 +213,6 @@ const StudentRegistration = () => {
               placeholder="Available Schedule"
               value={availSchedule}
               onChangeText={text => setAvailSchedule(text)}
-              style={styles.input}
-            />
-            <TextInput 
-              placeholder="Photo URL"
-              value={photoURL}
-              onChangeText={text => setPhotoURL(text)}
               style={styles.input}
             />
             
