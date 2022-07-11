@@ -34,7 +34,6 @@ export default function App() {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Modal" component={ModalScreen} />
             <Stack.Screen name="Role" component={RoleScreen} />
-            <Stack.Screen name="TutorHome" component={TutorHomePage} />
             </>
           ) : (
             <>
