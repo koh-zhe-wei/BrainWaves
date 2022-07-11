@@ -4,7 +4,6 @@ import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/Key
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/native'
 import { auth } from '../firebase';
-import { async } from '@firebase/util';
 
 const TutorLoginScreen = () => {
   const [email, setEmail] = useState('')

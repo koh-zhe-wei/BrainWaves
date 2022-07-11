@@ -110,7 +110,7 @@ const HomeScreen = () => {
                     <Ionicons name='person-circle-outline' size={50} color="#000000" />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+                <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                     <Ionicons name='chatbubbles' size={30} color="#000000" />
                 </TouchableOpacity>
 

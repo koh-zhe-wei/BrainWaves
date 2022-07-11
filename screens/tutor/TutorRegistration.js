@@ -39,7 +39,7 @@ const TutorRegistration = () => {
             createUserDocument(user,additionalData)
           })
           .then(() => { 
-            navigation.navigate("Home")
+            navigation.navigate("TutorHome")
           })
           .catch((error) => {
             if (error.code == "auth/email-already-in-use") {
