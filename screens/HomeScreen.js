@@ -96,6 +96,12 @@ const HomeScreen = () => {
                     <Ionicons name='chatbubbles' size={30} color="#000000" />
                 </TouchableOpacity>
 
+                <Image
+                style={tw("h-20 w-full")}
+                resizeMode="contain"
+                source={{ uri: auth.currentUser.url}}
+            />
+
             </View>
 
             {/*End of Header */}

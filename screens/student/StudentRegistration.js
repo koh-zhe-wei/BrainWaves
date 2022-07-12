@@ -26,6 +26,8 @@ const StudentRegistration = () => {
   const [priceRange, setPriceRange] = useState('')
   const [availSchedule , setAvailSchedule] = useState('')
   const [image , setImage] = useState('')
+  const [url , setURL] = useState('')
+    
  
   const navigation = useNavigation();
   var additionalData = [fullName,phoneNumber,birthday,gender,race,region,neededSub,priceRange,availSchedule]
@@ -84,6 +86,7 @@ const StudentRegistration = () => {
               priceRange:priceRange, 
               availSchedule:availSchedule,
               image:image,
+              url:url,
 
           }); 
           console.log("user data added");
@@ -215,7 +218,12 @@ const StudentRegistration = () => {
               onChangeText={text => setAvailSchedule(text)}
               style={styles.input}
             />
-            
+            <TextInput 
+              placeholder="Input Photo URL Here"
+              value={url}
+              onChangeText={text => setURL(text)}
+              style={styles.input}
+            />
           </View> 
         
           <View style={styles.buttonContainer}>
