@@ -6,17 +6,19 @@ import { auth } from './firebase'
 import { doc, setDoc, collection, getDocs } from 'firebase/firestore/lite'
 import { db } from './firebase'
 import tw from "tailwind-rn";
+import { async } from '@firebase/util'
+
 
 
 const RoleScreen = () => {
     const navigation = useNavigation()
   
-    const goToStudent = async () => {
+    const goToStudent = async() => {
         //await setDoc(doc(db,"student"))
         navigation.replace("StudentLogin")
         .catch(error => alert(error.message))
     }
-    
+
     const goToTutor = async () => {
         //await setDoc(doc(db,"tutor"))
         navigation.replace("TutorLogin")
