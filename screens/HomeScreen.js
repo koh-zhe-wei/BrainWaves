@@ -7,34 +7,10 @@ import tw from 'tailwind-rn'
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
 import { collection, doc, onSnapshot, setDoc } from 'firebase/firestore';
-import { db } from './firebase';
+import { db , storage} from './firebase';
+import { setUrl, getDownloadURL, ref, uploadBytesResumable , withPath, forURL,getStorage} from 'firebase/storage';
+import { setStatusBarStyle } from 'expo-status-bar';
 
-const DUMMY_DATA = [
-    {
-        firstName: 'Catherine',
-        lastName: 'Snow',
-        job: "Full-time Tutor",
-        photoURL: "https://www.nea.org/sites/default/files/legacy/2020/04/new_teacher.jpeg",
-        age: 27,
-        id: 123,
-    },
-    {
-        firstName: 'B',
-        lastName: 'Son',
-        job: "Full-time Tutor",
-        photoURL: "https://elearningindustry.com/wp-content/uploads/2019/10/professional-development-tools-for-teachers.jpg",
-        age: 27,
-        id: 456,
-    },
-    {
-        firstName: 'C',
-        lastName: 'Son',
-        job: "Full-time Tutor",
-        photoURL: "https://www.timeshighereducation.com/sites/default/files/styles/the_breaking_news_image_style/public/angry_teacher.jpg?itok=YhkRbBz7",
-        age: 27,
-        id: 789,
-    },
-];
 
 const HomeScreen = () => {
     const navigation = useNavigation();
@@ -92,8 +68,14 @@ const HomeScreen = () => {
         fetchCards();
         return unsub;
     }, [])
-
+    
     console.log(profiles);
+    
+
+    
+
+
+    
 
     return (
         <SafeAreaView>
@@ -113,6 +95,12 @@ const HomeScreen = () => {
                 <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                     <Ionicons name='chatbubbles' size={30} color="#000000" />
                 </TouchableOpacity>
+
+                <Image
+                style={tw("h-20 w-full")}
+                resizeMode="contain"
+                source={{ uri: auth.currentUser.url}}
+            />
 
             </View>
 
@@ -156,11 +144,13 @@ const HomeScreen = () => {
                             },
                         },
                     }}
+                    
                     renderCard={(card) => card ? (
                         <View key={card.id} style={tw("bg-white h-3/4 rounded-xl")}>
+                            
                             <Image
                                 style={tw("absolute top-0 h-full w-full rounded-xl")}
-                                source={{ uri: card.image }}
+                                source ={{ uri: card.image }}
                             />
 
                             <View style={[tw("absolute bottom-0 bg-white w-full flex-row justify-between items-center h-20 px-6 py-2 rounded-b-xl"

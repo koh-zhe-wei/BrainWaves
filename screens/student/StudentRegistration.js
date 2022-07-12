@@ -13,7 +13,7 @@ import {Ionicons} from "@expo/vector-icons";
 
 const StudentRegistration = () => {
 
-  const [photoURL, setPhotoURL] = useState('')
+  
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
@@ -26,6 +26,8 @@ const StudentRegistration = () => {
   const [priceRange, setPriceRange] = useState('')
   const [availSchedule , setAvailSchedule] = useState('')
   const [image , setImage] = useState('')
+  const [url , setURL] = useState('')
+    
  
   const navigation = useNavigation();
   var additionalData = [fullName,phoneNumber,birthday,gender,race,region,neededSub,priceRange,availSchedule]
@@ -67,7 +69,7 @@ const StudentRegistration = () => {
       const neededSub = additionalData[6]; 
       const priceRange = additionalData[7]; 
       const availSchedule = additionalData[8]; 
-      const photoURL = additionalData[9];
+      
 
       console.log("check"); 
       try { 
@@ -84,6 +86,7 @@ const StudentRegistration = () => {
               priceRange:priceRange, 
               availSchedule:availSchedule,
               image:image,
+              url:url,
 
           }); 
           console.log("user data added");
@@ -216,12 +219,11 @@ const StudentRegistration = () => {
               style={styles.input}
             />
             <TextInput 
-              placeholder="Photo URL"
-              value={photoURL}
-              onChangeText={text => setPhotoURL(text)}
+              placeholder="Input Photo URL Here"
+              value={url}
+              onChangeText={text => setURL(text)}
               style={styles.input}
             />
-            
           </View> 
         
           <View style={styles.buttonContainer}>

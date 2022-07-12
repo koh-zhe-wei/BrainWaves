@@ -1,19 +1,17 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity,Image } from 'react-native'
+import { StyleSheet, Text, TextInput, View, TouchableOpacity,Image, ScrollView, } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
-import { auth, db } from '../firebase'
+import { auth, db, storage } from '../firebase'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/core'
-import { doc, setDoc, addDoc, collection } from "firebase/firestore"; 
+import { addDoc, collection, Firestore, updateDoc,doc , setDoc} from "firebase/firestore"; 
 import * as ImagePicker from 'expo-image-picker';
 import {Ionicons} from "@expo/vector-icons";
-
-
-
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { setStatusBarStyle } from 'expo-status-bar';
 
 
 const TutorRegistration = () => {
-
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [fullName, setFullName] = useState('')
@@ -27,6 +25,9 @@ const TutorRegistration = () => {
     const [priceRange, setPriceRange] = useState('')
     const [availSchedule , setAvailSchedule] = useState('')
     const [image , setImage] = useState('')
+    const [progress , setProgress] = useState(0)
+    const [url , setURL] = useState('')
+    
   
     const navigation = useNavigation();
     var additionalData = [fullName,phoneNumber,birthday,gender,race,region,employment,type,priceRange,availSchedule]
@@ -39,7 +40,8 @@ const TutorRegistration = () => {
             createUserDocument(user,additionalData)
           })
           .then(() => { 
-            navigation.navigate("TutorHome")
+            
+            navigation.navigate("Home")
           })
           .catch((error) => {
             if (error.code == "auth/email-already-in-use") {
@@ -72,8 +74,12 @@ const TutorRegistration = () => {
         const type = additionalData[7]; 
         const priceRange = additionalData[8]; 
         const availSchedule = additionalData[9]; 
+        uploadImage(image,user.uid);
+        
 
-        console.log("check"); 
+       
+
+        
         try { 
             console.log("try entered with: " + user.uid);
             await addDoc(collection(db,"tutor") , { 
@@ -88,7 +94,9 @@ const TutorRegistration = () => {
                 type: type, 
                 priceRange:priceRange, 
                 availSchedule:availSchedule,
-                image:image,
+                image: `images/${user.uid}.png`,
+                url:url,
+                
 
             }); 
             console.log("user data added");
@@ -122,11 +130,34 @@ const TutorRegistration = () => {
         });
     
         console.log(result);
+        
     
         if (!result.cancelled) {
           setImage(result.uri);
         }
+       
       };
+
+      const uploadImage = (pic,id) => { 
+        if (!pic) return; 
+        const storageRef = ref(storage,`images/${id}.png`);
+        const uploadTask = uploadBytesResumable(storageRef, pic);
+        uploadTask.on("state-changed", (snapshot)  => { 
+          const prog = Math.round(
+            (snapshot.bytesTransferred/snapshot.totalBytes) * 100 
+          );
+          setProgress(progress);
+        },
+        (err) => console.log(err),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            console.log(url)})
+           
+         
+        }
+        )
+      }
+
     
       
       
@@ -231,7 +262,13 @@ const TutorRegistration = () => {
                 onChangeText={text => setAvailSchedule(text)}
                 style={styles.input}
               />
-              
+              <TextInput 
+                placeholder="Add Your Photo URL Here!"
+                value={url}
+                onChangeText={text => setURL(text)}
+                style={styles.input}
+                
+              />
               
             </View> 
           
@@ -270,6 +307,7 @@ const TutorRegistration = () => {
           paddingVertical: 10,
           borderRadius: 10,
           marginTop: 5,
+          
       
       },
       buttonContainer: {
