@@ -264,7 +264,7 @@ const TutorRegistration = () => {
                 style={styles.input}
               />
               <TextInput 
-                placeholder="Add Your Photo URL Here!"
+                placeholder="Input Photo URL Here!"
                 value={url}
                 onChangeText={text => setURL(text)}
                 style={styles.input}
