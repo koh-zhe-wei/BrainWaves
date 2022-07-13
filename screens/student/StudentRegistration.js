@@ -88,7 +88,7 @@ const StudentRegistration = () => {
               neededSubject:neededSub,
               priceRange:priceRange, 
               availSchedule:availSchedule,
-              image:`images/${user.uid}.png`,,
+              image:`images/${user.uid}.png`,
               url:url,
 
           }); 
