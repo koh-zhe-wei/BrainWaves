@@ -158,10 +158,9 @@ const HomeScreen = () => {
                     />
                 </TouchableOpacity>
                 
-
                 <TouchableOpacity onPress={() => navigation.navigate("Modal")}>
                 <Image
-                style={styles.avatar}
+                style={tw("h-10 w-10 rounded-full")}
                 resizeMode="contain"
                 source={{ uri: url }}
             />
@@ -176,8 +175,6 @@ const HomeScreen = () => {
             </View>
 
             <Text>Email: {auth.currentUser?.email}</Text>
-            <Text>UserUID: {userUID}</Text>
-            <Text>Gender: {gender}</Text>
             {/*End of Header */}
 
             {/* Cards */}
