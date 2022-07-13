@@ -176,8 +176,8 @@ const HomeScreen = () => {
             </View>
 
             <Text>Email: {auth.currentUser?.email}</Text>
-            <Text>Email: {userUID}</Text>
-            <Text>Email: {gender}</Text>
+            <Text>UserUID: {userUID}</Text>
+            <Text>Gender: {gender}</Text>
             {/*End of Header */}
 
             {/* Cards */}
@@ -238,7 +238,7 @@ const HomeScreen = () => {
                                     </Text>
                                     <Text>{card.type}</Text>
                                 </View>
-                                <Text style={tw("text-2xl font-bold")}>{card.age}</Text>
+                                <Text style={tw("text-2xl font-bold")}>{card.birthday}</Text>
                             </View>
                         </View>
                     ) : (
