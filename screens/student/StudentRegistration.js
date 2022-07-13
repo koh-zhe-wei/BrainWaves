@@ -74,7 +74,7 @@ const StudentRegistration = () => {
       console.log("check"); 
       try { 
           console.log("try entered with: " + user.uid);
-          await addDoc(collection(db,"student") , { 
+          await addDoc(collection(db,"student",user.id) , { 
               fullName: fullName,
               email: email,
               phoneNumber: phoneNum,

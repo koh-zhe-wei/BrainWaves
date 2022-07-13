@@ -82,7 +82,7 @@ const TutorRegistration = () => {
         
         try { 
             console.log("try entered with: " + user.uid);
-            await addDoc(collection(db,"tutor") , { 
+            await setDoc(doc(db,"tutor",user.uid) , { 
                 fullName: fullName,
                 email: email,
                 phoneNumber: phoneNum,
@@ -151,7 +151,8 @@ const TutorRegistration = () => {
         (err) => console.log(err),
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            console.log(url)})
+            console.log(url)
+          })
            
          
         }
