@@ -1,12 +1,14 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity,Image } from 'react-native'
+import { StyleSheet, Text, TextInput, View, TouchableOpacity,Image,ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
-import { auth, db } from '../firebase'
-import { createUserWithEmailAndPassword, reauthenticateWithCredential } from "firebase/auth";
+import { auth, db, storage } from '../firebase'
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigation } from '@react-navigation/core'
-import { addDoc, collection, Firestore } from "firebase/firestore"; 
+import { addDoc, collection, Firestore, updateDoc,doc , setDoc} from "firebase/firestore"; 
 import * as ImagePicker from 'expo-image-picker';
 import {Ionicons} from "@expo/vector-icons";
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { setStatusBarStyle } from 'expo-status-bar';
 
 
 
@@ -23,9 +25,10 @@ const StudentRegistration = () => {
   const [race, setRace] = useState('')
   const [region, setRegion] = useState('')
   const [neededSub, setNeededSub] = useState('')
-  const [priceRange, setPriceRange] = useState('')
+    const [priceRange, setPriceRange] = useState('')
   const [availSchedule , setAvailSchedule] = useState('')
   const [image , setImage] = useState('')
+  const [progress , setProgress] = useState(0)
   const [url , setURL] = useState('')
     
  
@@ -69,12 +72,12 @@ const StudentRegistration = () => {
       const neededSub = additionalData[6]; 
       const priceRange = additionalData[7]; 
       const availSchedule = additionalData[8]; 
+      uploadImage(image,user.uid);
       
 
-      console.log("check"); 
       try { 
           console.log("try entered with: " + user.uid);
-          await addDoc(collection(db,"student",user.id) , { 
+          await setDoc(doc(db,"student",user.uid) , { 
               fullName: fullName,
               email: email,
               phoneNumber: phoneNum,
@@ -85,7 +88,7 @@ const StudentRegistration = () => {
               neededSubject:neededSub,
               priceRange:priceRange, 
               availSchedule:availSchedule,
-              image:image,
+              image:`images/${user.uid}.png`,,
               url:url,
 
           }); 
@@ -125,6 +128,28 @@ const StudentRegistration = () => {
         setImage(result.uri);
       }
     };
+
+    const uploadImage = (pic,id) => { 
+      if (!pic) return; 
+      const storageRef = ref(storage,`images/${id}.png`);
+      const uploadTask = uploadBytesResumable(storageRef, pic);
+      uploadTask.on("state-changed", (snapshot)  => { 
+        const prog = Math.round(
+          (snapshot.bytesTransferred/snapshot.totalBytes) * 100 
+        );
+        setProgress(progress);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          console.log(url)
+        })
+         
+       
+      }
+      )
+    }
+
 
     return (
         <KeyboardAvoidingView
