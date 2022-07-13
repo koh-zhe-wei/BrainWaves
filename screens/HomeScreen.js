@@ -31,7 +31,7 @@ const HomeScreen = () => {
 
     const user = auth.currentUser; 
     const userUID = user.uid;
-    const userRef = doc(db,"tutor",userUID)
+    const userRef = doc(db,"student",userUID)
 
     useEffect(() => {
         async function fetchProfileData() {
