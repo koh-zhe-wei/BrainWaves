@@ -196,8 +196,8 @@ const HomeScreen = () => {
                     
             </View>
 
-            <Text>Email: {auth.currentUser?.email}</Text>
-            <Text>UID: {user.uid}</Text>
+            <Text style ={styles.titleText}> User: {fullName}</Text>
+            
             {/*End of Header */}
 
             {/* Cards */}

@@ -14,7 +14,7 @@ const TutorLoginScreen = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        navigation.replace("Home")
+        navigation.replace("TutorHome")
       }
     })
 

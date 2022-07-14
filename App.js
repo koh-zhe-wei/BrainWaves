@@ -10,6 +10,7 @@ import StudentRegistration from './screens/student/StudentRegistration';
 import TutorLoginScreen from './screens/tutor/TutorLoginScreen';
 import TutorRegistration from './screens/tutor/TutorRegistration';
 import ModalScreen from './screens/ModalScreen';
+import TutorHome from './screens/TutorHome';
 import { auth } from './screens/firebase';
 import { getAuth } from 'firebase/auth';
 
@@ -38,6 +39,7 @@ export default function App() {
             <Stack.Screen name="StudentLogin" component={StudentLoginScreen} />
             <Stack.Screen name="TutorRegistration" component={TutorRegistration} />
             <Stack.Screen name="StudentRegistration" component={StudentRegistration} />
+            <Stack.Screen name="TutorHome" component={TutorHome} />
             </>
           ) : (
             <>
@@ -48,6 +50,7 @@ export default function App() {
             <Stack.Screen name="TutorRegistration" component={TutorRegistration} />
             <Stack.Screen name="Modal" component={ModalScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="TutorHome" component={TutorHome} />
             </>
           )}
       </Stack.Navigator>
