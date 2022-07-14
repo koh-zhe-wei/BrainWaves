@@ -97,18 +97,21 @@ const TutorHome = () => {
         let unsub;
 
         const fetchCards = async () => {
+            const passes = await getDocs(collection(db, 'student', user.uid, 'passes')).then(
+                (snapshot) => snapshot.docs.map((doc) => doc.id)
+                );
+
             const swipes = await getDocs(collection(db, 'student', user.uid, 'swipes')).then(
                     (snapshot) => snapshot.docs.map((doc) => doc.id)
                     );
 
-            const swipedStudentIds = swipes.length > 0 ? swipes : ['empty'];
-
-            console.log(swipedStudentIds)
+            const passedTutorIds = passes.length > 0 ? passes : ['empty'];
+            const swipedTutorIds = swipes.length > 0 ? swipes : ['empty'];
 
             unsub = onSnapshot(
                 query(
                     collection(db, "student"),
-                    where('id', 'in', [...swipedStudentIds])),
+                    where('id', 'not-in', [...passedTutorIds, ...swipedTutorIds])),
                     (snapshot) => {
                 setProfiles(
                     snapshot.docs
@@ -125,6 +128,31 @@ const TutorHome = () => {
         fetchCards();
         return unsub;
     }, []);
+    
+    //console.log(profiles); 
+    
+    const swipeLeft = (cardIndex) => {
+        if (!profiles[cardIndex]) return;
+
+        const userSwiped = profiles[cardIndex];
+        console.log(`You swiped PASS on ${userSwiped.fullName}`);
+
+        setDoc(doc(db, 'student', user.uid, 'passes', userSwiped.id),
+            userSwiped);
+    };
+
+    const swipeRight = async (cardIndex) => {
+        if (!profiles[cardIndex]) return;
+
+        const userSwiped = profiles[cardIndex];
+        
+        console.log(
+                    `You swiped on ${userSwiped.fullName} (${userSwiped.job})`
+                );
+                
+        setDoc(doc(db, 'student', user.uid, 'swipes', userSwiped.id),
+            userSwiped);
+    };
 
     return (
         <SafeAreaView>
@@ -149,10 +177,91 @@ const TutorHome = () => {
                     
             </View>
 
-            <Text style ={styles.titleText}> User: {fullName}</Text>
+            <Text style ={styles.titleText}> Tutor: {fullName}</Text>
             {/*End of Header */}
 
-            <Text> I am the Tutor Home Page </Text>
+            {/* Cards */}
+            <View style={tw("flex-1 -mt-1")}>
+                <Swiper
+                    containerStyle={{ backgroundColor: "transparent" }}
+                    cards={profiles}
+                    stackSize={5}
+                    cardIndex={0}
+                    animateCardOpacity
+                    verticalSwipe={false}
+                    onSwipedLeft={(cardIndex) => {
+                        console.log('Swipe PASS');
+                        swipeLeft(cardIndex);
+                    }}
+                    onSwipedRight={(cardIndex) => {
+                        console.log('Swipe MATCH');
+                        swipeRight(cardIndex);
+                    }}
+                    backgroundColor={"#4FD0E9"}
+                    overlayLabels={{
+                        left: {
+                            title: "NOPE",
+                            style: {
+                                label: {
+                                    textAlign: "right",
+                                    color: "red",
+                                },
+                            },
+                        },
+                        right: {
+                            title: "MATCH",
+                            style: {
+                                label: {
+                                    textAlign: "left",
+                                    color: "green",
+                                },
+                            },
+                        },
+                    }}
+                    
+                    renderCard={(card) => card ? (
+                        <View key={card.id} style={tw("bg-white h-3/4 rounded-xl")}>
+                            
+                            <Image
+                                style={tw("absolute top-0 h-full w-full rounded-xl")}
+                                source ={{ uri: card.url }}
+                            />
+
+                            <View style={[tw("absolute bottom-0 bg-white w-full flex-row justify-between items-center h-20 px-6 py-2 rounded-b-xl"
+                            ),
+                            styles.cardShadow,
+                            ]}
+                            >
+                                <View>
+                                    <Text style={tw("text-xl font-bold")}>
+                                        {card.fullName}
+                                    </Text>
+                                    <Text>{card.type}</Text>
+                                </View>
+                                <Text style={tw("text-2xl font-bold")}>{card.birthday}</Text>
+                            </View>
+                        </View>
+                    ) : (
+                        <View
+                            style={[
+                                tw(
+                                    "relative bg-white h-3/4 rounded-xl justify-center items-center"
+                                ),
+                                styles.cardShadow,
+                            ]}
+                        >
+                            <Text style={tw("font-bold pb-5")}>No more profiles</Text>
+
+                            <Image
+                                style={tw("h-20 w-full")}
+                                height={100}
+                                width={100}
+                                source={{ uri: "https://links.papareact.com/6gb" }}
+                            />
+                        </View>
+                    )}
+                />
+            </View>
         </SafeAreaView>
     )
 }
