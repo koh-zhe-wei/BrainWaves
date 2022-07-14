@@ -29,7 +29,7 @@ export default function App() {
       <Stack.Navigator screenOptions ={{
         headerShown: false,
         }} headerMode = "none" initialRouteName="Role">
-          {user != null ? (
+          {user !== null ? (
             <>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Modal" component={ModalScreen} />

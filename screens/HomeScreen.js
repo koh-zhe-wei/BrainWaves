@@ -6,7 +6,7 @@ import { View, Text, Image, Button, SafeAreaView, StyleSheet, TouchableOpacity }
 import tw from 'tailwind-rn'
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
-import { collection, doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
+import { collection, doc, onSnapshot, setDoc, getDoc, query, where, getDocs } from 'firebase/firestore';
 import { db , storage} from './firebase';
 import { setUrl, getDownloadURL, ref, uploadBytesResumable , withPath, forURL,getStorage} from 'firebase/storage';
 import { setStatusBarStyle } from 'expo-status-bar';
@@ -27,6 +27,7 @@ const HomeScreen = () => {
     const [availSchedule , setAvailSchedule] = useState('')
     const [image , setImage] = useState('')
     const [url , setURL] = useState('')
+    
 
 
     const user = auth.currentUser; 
@@ -68,6 +69,7 @@ const HomeScreen = () => {
             setImage(ig);
             //console.log("docSnap.firstName: ", docSnap.get("fullName"));
             console.log("Full Name: ", fullName);
+            /*
             console.log("Phone Number: ", phoneNumber);
             console.log("Birthday: ", birthday);
             console.log("URL: ", url);
@@ -79,6 +81,7 @@ const HomeScreen = () => {
             console.log("Price Range: ", priceRange);
             console.log("Schedule: ", availSchedule);
             console.log("Image: ", image);
+            */
             
           } catch (error) {
             console.log("Error in finding profile", error);
@@ -106,48 +109,53 @@ const HomeScreen = () => {
         return unsub();
     }, []);
 
+
+    useEffect(() => {
+        let unsub;
+
+        const fetchCards = async () => {
+            const passes = getDocs(collection(db, 'student', user.uid, 'passes')).then(
+                (snapshot) => snapshot.docs.map((doc) => doc.id)
+                );
+
+            const passedUserIds = passes.length > 0 ? passes : ['test'];
+            console.log('PIDs:', passedUserIds)
+
+            unsub = onSnapshot(
+                query(
+                    collection(db, "tutor"),
+                    where('id', 'not-in', [...passedUserIds])),
+                    (snapshot) => {
+                setProfiles(
+                    snapshot.docs
+                    .filter((doc) => doc.id !== user.uid)
+                    .map((doc) => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }))
+                );
+            }
+            );
+        };
+
+        fetchCards();
+        return unsub;
+    }, []);
+    
+    //console.log(profiles);
+    
     const swipeLeft = (cardIndex) => {
         if (!profiles[cardIndex]) return;
 
         const userSwiped = profiles[cardIndex];
         console.log(`You swiped PASS on ${userSwiped.fullName}`);
 
-        setDoc(doc(db, 'student', auth.currentUser.uid, 'passes', userSwiped.id),
-            userSwiped);
-        setDoc(doc(db, 'tutor', userSwiped.id, 'passes', auth.currentUser.uid),
+        setDoc(doc(db, 'student', user.uid, 'passes', userSwiped.id),
             userSwiped);
     };
 
-    const swipeRight = async (cardIndex) => {
-
-    };
-
-    useEffect(() => {
-        let unsub;
-
-        const fetchCards = async () => {
-            unsub = onSnapshot(collection(db, 'tutor'), (snapshot) => {
-                setProfiles(
-                    snapshot.docs.filter(doc => doc.id !== auth.currentUser.uid).map((doc) => ({
-                        id: doc.id,
-                        ...doc.data(),
-                    }))
-                );
-            });
-        };
-
-        fetchCards();
-        return unsub;
-    }, [])
+    const swipeRight = async (cardIndex) => {};
     
-    console.log(profiles);
-    
-
-    
-
-
-    
-
     return (
         <SafeAreaView>
             {/* Header */}
@@ -175,6 +183,7 @@ const HomeScreen = () => {
             </View>
 
             <Text>Email: {auth.currentUser?.email}</Text>
+            <Text>UID: {user.uid}</Text>
             {/*End of Header */}
 
             {/* Cards */}
