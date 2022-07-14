@@ -38,7 +38,6 @@ export default function App() {
             <Stack.Screen name="StudentLogin" component={StudentLoginScreen} />
             <Stack.Screen name="TutorRegistration" component={TutorRegistration} />
             <Stack.Screen name="StudentRegistration" component={StudentRegistration} />
-            
             </>
           ) : (
             <>

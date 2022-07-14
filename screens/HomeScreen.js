@@ -117,13 +117,17 @@ const HomeScreen = () => {
                 (snapshot) => snapshot.docs.map((doc) => doc.id)
                 );
 
-            const passedUserIds = passes.length > 0 ? passes : ['empty'];
-            console.log('PIDs:', passedUserIds)
+            const swipes = await getDocs(collection(db, 'student', user.uid, 'swipes')).then(
+                    (snapshot) => snapshot.docs.map((doc) => doc.id)
+                    );
+
+            const passedTutorIds = passes.length > 0 ? passes : ['empty'];
+            const swipedTutorIds = swipes.length > 0 ? swipes : ['empty'];
 
             unsub = onSnapshot(
                 query(
                     collection(db, "tutor"),
-                    where('id', 'not-in', [...passedUserIds])),
+                    where('id', 'not-in', [...passedTutorIds, ...swipedTutorIds])),
                     (snapshot) => {
                 setProfiles(
                     snapshot.docs
@@ -141,7 +145,7 @@ const HomeScreen = () => {
         return unsub;
     }, []);
     
-    //console.log(profiles);
+    //console.log(profiles); 
     
     const swipeLeft = (cardIndex) => {
         if (!profiles[cardIndex]) return;
@@ -153,7 +157,18 @@ const HomeScreen = () => {
             userSwiped);
     };
 
-    const swipeRight = async (cardIndex) => {};
+    const swipeRight = async (cardIndex) => {
+        if (!profiles[cardIndex]) return;
+
+        const userSwiped = profiles[cardIndex];
+        
+        console.log(
+                    `You swiped on ${userSwiped.fullName} (${userSwiped.job})`
+                );
+                
+        setDoc(doc(db, 'student', user.uid, 'swipes', userSwiped.id),
+            userSwiped);
+    };
     
     return (
         <SafeAreaView>
