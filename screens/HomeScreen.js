@@ -38,7 +38,6 @@ const HomeScreen = () => {
         async function fetchProfileData() {
           const docSnap = await getDoc(userRef);
           if (docSnap.exists()) {
-            console.log("smmol");
             console.log("Document data:", docSnap.data());
           }
           try {
@@ -114,11 +113,11 @@ const HomeScreen = () => {
         let unsub;
 
         const fetchCards = async () => {
-            const passes = getDocs(collection(db, 'student', user.uid, 'passes')).then(
+            const passes = await getDocs(collection(db, 'student', user.uid, 'passes')).then(
                 (snapshot) => snapshot.docs.map((doc) => doc.id)
                 );
 
-            const passedUserIds = passes.length > 0 ? passes : ['test'];
+            const passedUserIds = passes.length > 0 ? passes : ['empty'];
             console.log('PIDs:', passedUserIds)
 
             unsub = onSnapshot(

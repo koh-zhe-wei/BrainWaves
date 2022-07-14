@@ -25,7 +25,7 @@ const StudentRegistration = () => {
   const [race, setRace] = useState('')
   const [region, setRegion] = useState('')
   const [neededSub, setNeededSub] = useState('')
-    const [priceRange, setPriceRange] = useState('')
+  const [priceRange, setPriceRange] = useState('')
   const [availSchedule , setAvailSchedule] = useState('')
   const [image , setImage] = useState('')
   const [progress , setProgress] = useState(0)
