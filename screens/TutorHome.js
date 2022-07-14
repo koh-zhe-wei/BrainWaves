@@ -24,10 +24,12 @@ const TutorHome = () => {
     const [availSchedule , setAvailSchedule] = useState('')
     const [image , setImage] = useState('')
     const [url , setURL] = useState('')
+    const [neededSubject, setneededSubject] = useState('')
 
     const user = auth.currentUser; 
     const userUID = user.uid;
     const userfullName = user.fullName;
+    const userSubj = user.neededSubject;
     const userRef = doc(db,"tutor",userUID)
 
     useEffect(() => {
@@ -97,21 +99,21 @@ const TutorHome = () => {
         let unsub;
 
         const fetchCards = async () => {
-            const passes = await getDocs(collection(db, 'student', user.uid, 'passes')).then(
+            const passes = await getDocs(collection(db, 'tutor', user.uid, 'passes')).then(
                 (snapshot) => snapshot.docs.map((doc) => doc.id)
                 );
 
-            const swipes = await getDocs(collection(db, 'student', user.uid, 'swipes')).then(
+            const swipes = await getDocs(collection(db, 'tutor', user.uid, 'swipes')).then(
                     (snapshot) => snapshot.docs.map((doc) => doc.id)
                     );
 
-            const passedTutorIds = passes.length > 0 ? passes : ['empty'];
-            const swipedTutorIds = swipes.length > 0 ? swipes : ['empty'];
+            const passedStudentIds = passes.length > 0 ? passes : ['empty'];
+            const swipedStudentIds = swipes.length > 0 ? swipes : ['empty'];
 
             unsub = onSnapshot(
                 query(
                     collection(db, "student"),
-                    where('id', 'not-in', [...passedTutorIds, ...swipedTutorIds])),
+                    where('id', 'not-in', [...passedStudentIds, ...swipedStudentIds])),
                     (snapshot) => {
                 setProfiles(
                     snapshot.docs
@@ -137,7 +139,7 @@ const TutorHome = () => {
         const userSwiped = profiles[cardIndex];
         console.log(`You swiped PASS on ${userSwiped.fullName}`);
 
-        setDoc(doc(db, 'student', user.uid, 'passes', userSwiped.id),
+        setDoc(doc(db, 'tutor', user.uid, 'passes', userSwiped.id),
             userSwiped);
     };
 
@@ -150,7 +152,7 @@ const TutorHome = () => {
                     `You swiped on ${userSwiped.fullName} (${userSwiped.job})`
                 );
                 
-        setDoc(doc(db, 'student', user.uid, 'swipes', userSwiped.id),
+        setDoc(doc(db, 'tutor', user.uid, 'swipes', userSwiped.id),
             userSwiped);
     };
 
@@ -236,7 +238,7 @@ const TutorHome = () => {
                                     <Text style={tw("text-xl font-bold")}>
                                         {card.fullName}
                                     </Text>
-                                    <Text>{card.type}</Text>
+                                    <Text>Needs help in: {card.neededSubject}</Text>
                                 </View>
                                 <Text style={tw("text-2xl font-bold")}>{card.birthday}</Text>
                             </View>
