@@ -147,13 +147,33 @@ const TutorHome = () => {
         if (!profiles[cardIndex]) return;
 
         const userSwiped = profiles[cardIndex];
-        
-        console.log(
+        const loggedInProfile = await (
+            await getDoc(doc(db, 'tutor', user.uid))
+        ).data();
+
+        //Check if the user swiped on you...
+        getDoc(doc(db, 'student', userSwiped.id, "swipes", user.uid)).then(
+            (documentSnapshot) => {
+                if (documentSnapshot.exists()) {
+                    //user has matched
+                    //Create a MATCH
+                    console.log('Hooray, You MATCHED with ${userSwiped.fullName}');
+
+                    setDoc(doc(db, 'tutor', user.uid, 'swipes', userSwiped.id),
+            userSwiped);
+
+            //CREATE A MATCH
+            
+                } else {
+                    console.log(
                     `You swiped on ${userSwiped.fullName} (${userSwiped.job})`
                 );
                 
         setDoc(doc(db, 'tutor', user.uid, 'swipes', userSwiped.id),
             userSwiped);
+                }
+            }
+        )
     };
 
     return (
