@@ -6,8 +6,9 @@ import { View, Text, Image, Button, SafeAreaView, StyleSheet, TouchableOpacity }
 import tw from 'tailwind-rn'
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
-import { collection, doc, onSnapshot, setDoc, getDoc, query, where, getDocs } from 'firebase/firestore';
+import { collection, doc, onSnapshot, setDoc, getDoc, query, where, getDocs, serverTimestamp } from 'firebase/firestore';
 import { db , storage} from './firebase';
+import generateId from '../lib/generateId';
 
 const TutorHome = () => {
     const navigation = useNavigation();
@@ -157,13 +158,25 @@ const TutorHome = () => {
                 if (documentSnapshot.exists()) {
                     //user has matched
                     //Create a MATCH
-                    console.log('Hooray, You MATCHED with ${userSwiped.fullName}');
+                    console.log(`Hooray, You MATCHED with ${userSwiped.fullName}`);
 
                     setDoc(doc(db, 'tutor', user.uid, 'swipes', userSwiped.id),
             userSwiped);
 
-            //CREATE A MATCH
-            
+            //CREATE A MATCH!!!
+            setDoc(doc(db, 'matches', generateId(user.uid, userSwiped.id)), {
+                users: {
+                    [user.uid]: loggedInProfile,
+                    [userSwiped.id]: userSwiped 
+                },
+                usersMatched: [user.uid, userSwiped.id],
+                timestamp: serverTimestamp(),
+            });
+
+            navigation.navigate("Match", {
+                loggedInProfile,
+                userSwiped,
+            });
                 } else {
                     console.log(
                     `You swiped on ${userSwiped.fullName} (${userSwiped.job})`
