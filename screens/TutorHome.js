@@ -113,7 +113,7 @@ const TutorHome = () => {
             unsub = onSnapshot(
                 query(
                     collection(db, "student"),
-                    where('id', 'in', [...passedStudentIds, ...swipedStudentIds])),
+                    where('id', 'not-in', [...passedStudentIds, ...swipedStudentIds])),
                     (snapshot) => {
                 setProfiles(
                     snapshot.docs
