@@ -83,6 +83,7 @@ const TutorRegistration = () => {
         try { 
             console.log("try entered with: " + user.uid);
             await setDoc(doc(db,"tutor",user.uid) , { 
+                userID: user.uid,
                 fullName: fullName,
                 email: email,
                 phoneNumber: phoneNum,
