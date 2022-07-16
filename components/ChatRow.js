@@ -17,7 +17,7 @@ const ChatRow = ({ matchDetails }) => {
     console.log('MatchDeets:', matchDetails)
 
     useEffect(() => {
-        setMatchedUserInfo(getMatchedUserInfo(matchDetails.user, user.uid));
+        setMatchedUserInfo(getMatchedUserInfo(matchDetails.users, user.uid));
     }, [matchDetails, user])
 
     return (
@@ -33,7 +33,7 @@ const ChatRow = ({ matchDetails }) => {
 
             <View>
                 <Text style={tw("text-lg font-semibold")}>
-                    {matchedUserInfo?.displayName}
+                    {matchedUserInfo?.fullName}
                 </Text>
                 <Text>"Say Hi!"</Text>
             </View>
