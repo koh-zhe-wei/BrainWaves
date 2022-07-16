@@ -96,6 +96,7 @@ const TutorRegistration = () => {
                 availSchedule:availSchedule,
                 image: `images/${user.uid}.png`,
                 url:url,
+                id:user.uid,
                 
 
             }); 
