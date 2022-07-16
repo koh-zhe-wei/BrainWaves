@@ -13,6 +13,7 @@ import ModalScreen from './screens/ModalScreen';
 import TutorHome from './screens/TutorHome';
 import MatchedScreen from './screens/MatchedScreen';
 import ChatScreen from './screens/ChatScreen';
+import MessageScreen from './screens/MessageScreen';
 import { auth } from './screens/firebase';
 import { getAuth } from 'firebase/auth';
 
@@ -38,6 +39,7 @@ export default function App() {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Modal" component={ModalScreen} />
             <Stack.Screen name="Chat" component={ChatScreen} />
+            <Stack.Screen name="Message" component={MessageScreen} />
             <Stack.Screen name="Role" component={RoleScreen} />
             <Stack.Screen name="TutorLogin" component={TutorLoginScreen} />
             <Stack.Screen name="StudentLogin" component={StudentLoginScreen} />
@@ -60,6 +62,7 @@ export default function App() {
             <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="TutorHome" component={TutorHome} />
+            <Stack.Screen name="Message" component={MessageScreen} />
             
             <Stack.Group screenOptions={{ presentation: "transparentModal"}}>
             <Stack.Screen name="Match" component={MatchedScreen} />
