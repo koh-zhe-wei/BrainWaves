@@ -208,6 +208,11 @@ const TutorHome = () => {
                 source={{ uri: url }}
             />
                 </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+                <Ionicons name='chatbox' size={30}
+            />
+                </TouchableOpacity>
                 
                     
             </View>

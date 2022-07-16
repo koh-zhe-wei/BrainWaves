@@ -1,5 +1,4 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { TwitterAuthProvider } from "firebase/auth";
 import React from "react";
 import { View, Text, TouchableOpacity, Image} from 'react-native'
 import tw from "tailwind-rn";

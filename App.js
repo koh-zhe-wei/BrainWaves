@@ -12,8 +12,10 @@ import TutorRegistration from './screens/tutor/TutorRegistration';
 import ModalScreen from './screens/ModalScreen';
 import TutorHome from './screens/TutorHome';
 import MatchedScreen from './screens/MatchedScreen';
+import ChatScreen from './screens/ChatScreen';
 import { auth } from './screens/firebase';
 import { getAuth } from 'firebase/auth';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -35,11 +37,13 @@ export default function App() {
             <>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Modal" component={ModalScreen} />
+            <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="Role" component={RoleScreen} />
             <Stack.Screen name="TutorLogin" component={TutorLoginScreen} />
             <Stack.Screen name="StudentLogin" component={StudentLoginScreen} />
             <Stack.Screen name="TutorRegistration" component={TutorRegistration} />
             <Stack.Screen name="StudentRegistration" component={StudentRegistration} />
+
             <Stack.Screen name="TutorHome" component={TutorHome} />
             <Stack.Group screenOptions={{ presentation: "transparentModal"}}>
             <Stack.Screen name="Match" component={MatchedScreen} />
@@ -53,8 +57,10 @@ export default function App() {
             <Stack.Screen name="TutorLogin" component={TutorLoginScreen} />
             <Stack.Screen name="TutorRegistration" component={TutorRegistration} />
             <Stack.Screen name="Modal" component={ModalScreen} />
+            <Stack.Screen name="Chat" component={ChatScreen} />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="TutorHome" component={TutorHome} />
+            
             <Stack.Group screenOptions={{ presentation: "transparentModal"}}>
             <Stack.Screen name="Match" component={MatchedScreen} />
             </Stack.Group>
