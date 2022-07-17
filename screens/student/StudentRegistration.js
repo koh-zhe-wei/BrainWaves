@@ -91,6 +91,7 @@ const StudentRegistration = () => {
               availSchedule:availSchedule,
               image:`images/${user.uid}.png`,
               url:url,
+              id: user.uid,
 
           }); 
           console.log("user data added");

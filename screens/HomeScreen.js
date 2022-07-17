@@ -10,6 +10,7 @@ import { collection, doc, onSnapshot, setDoc, getDoc, query, where, getDocs } fr
 import { db , storage} from './firebase';
 import { setUrl, getDownloadURL, ref, uploadBytesResumable , withPath, forURL,getStorage} from 'firebase/storage';
 import { setStatusBarStyle } from 'expo-status-bar';
+import generateId from '../lib/generateId';
 
 
 const HomeScreen = () => {
@@ -161,13 +162,45 @@ const HomeScreen = () => {
         if (!profiles[cardIndex]) return;
 
         const userSwiped = profiles[cardIndex];
-        
-        console.log(
+        const loggedInProfile = await (
+            await getDoc(doc(db, 'student', user.uid))
+        ).data();
+
+        //Check if the user swiped on you...
+        getDoc(doc(db, 'tutor', userSwiped.id, "swipes", user.uid)).then(
+            (documentSnapshot) => {
+                if (documentSnapshot.exists()) {
+                    //user has matched
+                    //Create a MATCH
+                    console.log(`Hooray, You MATCHED with ${userSwiped.fullName}`);
+
+                    setDoc(doc(db, 'student', user.uid, 'swipes', userSwiped.id),
+            userSwiped);
+
+            //CREATE A MATCH!!!
+            setDoc(doc(db, 'matches', generateId(user.uid, userSwiped.id)), {
+                users: {
+                    [user.uid]: loggedInProfile,
+                    [userSwiped.id]: userSwiped 
+                },
+                usersMatched: [user.uid, userSwiped.id],
+                timestamp: serverTimestamp(),
+            });
+
+            navigation.navigate("Match", {
+                loggedInProfile,
+                userSwiped,
+            });
+                } else {
+                    console.log(
                     `You swiped on ${userSwiped.fullName} (${userSwiped.job})`
                 );
                 
         setDoc(doc(db, 'student', user.uid, 'swipes', userSwiped.id),
             userSwiped);
+                }
+            }
+        )
     };
     
     return (
