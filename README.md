@@ -76,13 +76,6 @@ Once a tutor is swiped right on, they will receive a notification asking them to
 reflected in Diagram 1 below. Once confirmed, they will then unlock access to each other’s numbers to make arrangements for their tuition schedules. 
 
 
-## *Progress Tracking - Gamification Component*
-
-Tutors are given a starting level based on their experience level (number of teaching years, academic qualifications).
-Tutors can earn experience points - by teaching more students and getting good reviews and leveling up. This is reflected on a progress bar.
-There is a feedback component where students can give a rating and written review for their tutor after the tuition duration is over. This helps improve the transparency and quality of tutors on the platform.
-
-
 
 
 
