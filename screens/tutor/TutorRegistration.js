@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity,Image, ScrollView, } from 'react-native'
-import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity,Image, ScrollView,Platform } from 'react-native'
+import React, { useState, useEffect,useRef} from 'react';
 import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView'
 import { auth, db, storage } from '../firebase'
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -9,6 +9,10 @@ import * as ImagePicker from 'expo-image-picker';
 import {Ionicons} from "@expo/vector-icons";
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { setStatusBarStyle } from 'expo-status-bar';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+import Constants from "expo-constants";
+import * as Device from 'expo-device';
 
 
 const TutorRegistration = () => {
@@ -27,6 +31,10 @@ const TutorRegistration = () => {
     const [image , setImage] = useState('')
     const [progress , setProgress] = useState(0)
     const [url , setURL] = useState('')
+    const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
     
   
     const navigation = useNavigation();
@@ -76,6 +84,7 @@ const TutorRegistration = () => {
         const availSchedule = additionalData[9]; 
         uploadImage(image,user.uid);
         
+      
 
        
 
@@ -98,9 +107,11 @@ const TutorRegistration = () => {
                 image: `images/${user.uid}.png`,
                 url:url,
                 id:user.uid,
+                token: expoPushToken,
                 
 
             }); 
+            
             console.log("user data added");
         } catch (e) {
           console.log('We have the error', e);
@@ -161,14 +172,38 @@ const TutorRegistration = () => {
         )
       }
 
+      registerForPushNotificationsAsync = async () => {
+        if (Device.isDevice) {
+          const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+          let finalStatus = existingStatus;
+          if (existingStatus !== 'granted') {
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
+          }
+          if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+          }
+          const token = await (await Notifications.getExpoPushTokenAsync()).data;
+          console.log(token);
+          return token;
+        
+        }
+    }
+
+      useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+      }, []);
+
     
       
       
       return (
           <KeyboardAvoidingView
             style={styles.container}
-            behavior="padding"
+
           >
+            <ScrollView>
               <View 
               style={{alignItems:"center",justifyContent:"center" }}>
                 <TouchableOpacity
@@ -189,7 +224,7 @@ const TutorRegistration = () => {
               </View> 
             
               
-            <View style={styles.inputContainer}> 
+            <View style={styles.inputContainer} >
             
             <TextInput 
                 placeholder="Full Name as on NRIC"
@@ -288,6 +323,8 @@ const TutorRegistration = () => {
               </TouchableOpacity>
               
             </View> 
+            </ScrollView>
+           
           </KeyboardAvoidingView>   
         )
       }
@@ -298,8 +335,10 @@ const TutorRegistration = () => {
         container: { 
           flex: 1,
           justifyContent: 'center', 
-          alignItems: 'center',
-        },
+          //alignItems: 'center', 
+        paddingHorizontal:9,
+       marginLeft:65,
+              },
         inputContainer: {
             width: '80%'
       
@@ -314,10 +353,11 @@ const TutorRegistration = () => {
       
       },
       buttonContainer: {
-          width: '60%',
+          width: '70%',
           justifyContent: 'center',
           alignItems: 'center',
           marginTop: 20,
+          marginLeft:18,
       },
       button: {
           backgroundColor: '#08352b',
@@ -360,14 +400,7 @@ const TutorRegistration = () => {
           alignItems: 'center',
           marginTop: 10,
       },
-      titleHeader: {
-        color: '#000000',
-        fontWeight: '800',
-        fontSize: 26, 
-        alignItems: 'center',
-        marginBottom: 3,
-    
-       },
+      
        avatarPlaceholder: {
         backgroundColor: '#e1e2e9',
         width: 100,
@@ -378,6 +411,7 @@ const TutorRegistration = () => {
         marginBottom: 20,
         justifyContent: "center",
         alignItems: "center",
+        marginRight:70,
        },
        avatar: {
         position:"absolute",

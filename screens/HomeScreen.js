@@ -165,6 +165,7 @@ const HomeScreen = () => {
         const loggedInProfile = await (
             await getDoc(doc(db, 'student', user.uid))
         ).data();
+       
 
         //Check if the user swiped on you...
         getDoc(doc(db, 'tutor', userSwiped.id, "swipes", user.uid)).then(
@@ -193,8 +194,9 @@ const HomeScreen = () => {
             });
                 } else {
                     console.log(
-                    `You swiped on ${userSwiped.fullName} (${userSwiped.job})`
-                );
+                    `You swiped on ${userSwiped.fullName} (${userSwiped.birthday})`)
+                    sendPushNotification(userSwiped.token)
+                ;
                 
         setDoc(doc(db, 'student', user.uid, 'swipes', userSwiped.id),
             userSwiped);
@@ -202,6 +204,25 @@ const HomeScreen = () => {
             }
         )
     };
+
+    async function sendPushNotification(expoPushToken) {
+        const message = {
+          to: expoPushToken,
+          sound: 'default',
+          title: 'A student has swiped right on you!',
+          body: 'Tap to view',
+          
+        };
+      
+        await fetch('https://exp.host/--/api/v2/push/send', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(message),
+        });
+      }
     
     return (
         <SafeAreaView>
@@ -230,7 +251,7 @@ const HomeScreen = () => {
                     
             </View>
 
-            <Text style ={styles.titleText}> User: {fullName}</Text>
+    
             
             {/*End of Header */}
 
