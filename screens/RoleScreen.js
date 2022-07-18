@@ -14,13 +14,11 @@ const RoleScreen = () => {
     const navigation = useNavigation()
   
     const goToStudent = async() => {
-        //await setDoc(doc(db,"student"))
         navigation.replace("StudentLogin")
         .catch(error => alert(error.message))
     }
 
     const goToTutor = async () => {
-        //await setDoc(doc(db,"tutor"))
         navigation.replace("TutorLogin")
         .catch(error => alert(error.message))
     }

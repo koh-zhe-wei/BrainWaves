@@ -245,7 +245,7 @@ const TutorRegistration = () => {
                 style={styles.input}
               />
               <TextInput 
-                placeholder="Birthday"
+                placeholder="Age"
                 value={birthday}
                 onChangeText={text => setBirthday(text)}
                 style={styles.input}
