@@ -52,6 +52,8 @@ Potential tutors are able to kickstart or enhance their tutoring career on our p
 
 Our key features include:
 
+## *Dual Interface*
+
 Profile Creation (Tutors & Tutees)
 When opening the application, the user will be asked to choose between 2 options to classify themselves as a tutor or a tutee. Each user type will experience different app navigations.
 Once the user type has been established, the user will be required to login or to sign up for an account. For existing users whose accounts are registered in our database, they can proceed to login to their accounts.
@@ -68,13 +70,15 @@ We will be using the database and running algorithms to curate the most appropri
 
 ## *Tutor Selection*
 
-To gamify the user interface, tutees would then be given all the curated tutor profile cards in a tinder carousel format where they can swipe left or right to indicate their interest for suitable tutors. Tutor cards would consist of photos, subject expertise, tutoring rates and geographical locations.
+To personalise the user interface, tutees would then be given all the curated tutor profile cards in a tinder carousel format where they can swipe left or right to indicate their interest for suitable tutors. Tutor cards would consist of photos, subject expertise, tutoring rates and geographical locations.
 
 Tutees will still be able to customize preferences of the tutor regarding various things such as subject, their qualification, their price range, location, former schools (could be more beneficial to choosing their own alumni etc) in their settings tab.
 
-Once a tutor is swiped right on, they will receive a notification asking them to decline or accept the offer. The parent/tutee will be notified and will be sent a confirmation agreement as 
-reflected in Diagram 1 below. Once confirmed, they will then unlock access to each other’s numbers to make arrangements for their tuition schedules. 
+## *Notifications*
+Once a tutor is swiped right on, they will receive a notification asking them to decline or accept the offer. The parent/tutee will be notified and will be guided to a matched screen, that will display who they are matched with and that they can now chat with that person. 
 
+## *Chat Function*
+With the tutee and tutor swiping right on one another, they will then unlock access to the chat function to make arrangements for their tuition schedules. 
 
 
 
