@@ -29,8 +29,6 @@ const HomeScreen = () => {
     const [image , setImage] = useState('')
     const [url , setURL] = useState('')
     
-
-
     const user = auth.currentUser; 
     const userUID = user.uid;
     const userRef = doc(db,"student",userUID)
@@ -146,8 +144,7 @@ const HomeScreen = () => {
         return unsub;
     }, []);
     
-    //console.log(profiles); 
-    
+    {/* creating matches and passes in firebase */}
     const swipeLeft = (cardIndex) => {
         if (!profiles[cardIndex]) return;
 
@@ -167,7 +164,7 @@ const HomeScreen = () => {
         ).data();
        
 
-        //Check if the user swiped on you...
+        {/*Check if the user swiped on you... */}
         getDoc(doc(db, 'tutor', userSwiped.id, "swipes", user.uid)).then(
             (documentSnapshot) => {
                 if (documentSnapshot.exists()) {
@@ -178,7 +175,7 @@ const HomeScreen = () => {
                     setDoc(doc(db, 'student', user.uid, 'swipes', userSwiped.id),
             userSwiped);
 
-            //CREATE A MATCH!!!
+            {/* CREATE A MATCH in firebase */}
             setDoc(doc(db, 'matches', generateId(user.uid, userSwiped.id)), {
                 users: {
                     [user.uid]: loggedInProfile,
@@ -205,6 +202,7 @@ const HomeScreen = () => {
         )
     };
 
+    {/* Notifications */}
     async function sendPushNotification(expoPushToken) {
         const message = {
           to: expoPushToken,

@@ -10,11 +10,9 @@ const MatchedScreen = () => {
     const navigation = useNavigation();
     const {params} = useRoute();
     
-   
     const { loggedInProfile, userSwiped } = params;
 
-
-    
+    {/* Notifications */}
     async function sendPushNotification(expoPushToken) {
         const message = {
           to: expoPushToken,

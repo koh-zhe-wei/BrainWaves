@@ -31,6 +31,7 @@ const MessageScreen = () => {
     [matchDetails, db]
     );
 
+    {/* Message Functionality */}
     const sendMessage = () => {
         addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
             timestamp: serverTimestamp(),

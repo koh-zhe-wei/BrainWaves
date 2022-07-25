@@ -133,7 +133,7 @@ const TutorHome = () => {
     }, []);
     
     //console.log(profiles); 
-    
+    {/* Implementing swipes and passes in firebase */}
     const swipeLeft = (cardIndex) => {
         if (!profiles[cardIndex]) return;
 
