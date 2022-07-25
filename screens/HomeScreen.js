@@ -4,12 +4,10 @@ import { signOut } from "firebase/auth";
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { View, Text, Image, Button, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
 import tw from 'tailwind-rn'
-import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import Swiper from "react-native-deck-swiper";
 import { collection, doc, onSnapshot, setDoc, getDoc, query, where, getDocs } from 'firebase/firestore';
 import { db , storage} from './firebase';
-import { setUrl, getDownloadURL, ref, uploadBytesResumable , withPath, forURL,getStorage} from 'firebase/storage';
-import { setStatusBarStyle } from 'expo-status-bar';
 import generateId from '../lib/generateId';
 
 
