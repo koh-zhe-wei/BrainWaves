@@ -246,7 +246,6 @@ const HomeScreen = () => {
                 
                     
             </View>
-            <Text style ={styles.titleText}> {fullName}</Text>
 
     
             
@@ -306,7 +305,7 @@ const HomeScreen = () => {
                             >
                                 <View>
                                     <Text style={tw("text-xl font-bold")}>
-                                        {card.fullName}
+                                        {card.priceRange}
                                     </Text>
                                     <Text>{card.type}</Text>
                                 </View>
