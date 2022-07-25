@@ -199,11 +199,11 @@ const TutorHome = () => {
                     />
                 </TouchableOpacity>
 
-                <Text> Available Assignments </Text>
+                
                 
                 <TouchableOpacity onPress={() => navigation.navigate("Modal")}>
                 <Image
-                style={tw("h-10 w-10 rounded-full")}
+                style={styles.avatarPlaceholder}
                 resizeMode="contain"
                 source={{ uri: url }}
             />
@@ -217,7 +217,7 @@ const TutorHome = () => {
                     
             </View>
 
-            <Text style ={styles.titleText}> Tutor: {fullName}</Text>
+            <Text style ={styles.titleText}> {fullName}</Text>
             {/*End of Header */}
 
             {/* Cards */}
@@ -312,8 +312,22 @@ const styles = StyleSheet.create({
     },
     titleText: {
       fontSize: 20,
-      fontWeight: "bold"
-    }
+      fontWeight: "bold",
+      alignItems: 'center',
+      justifyContent: "center",
+      marginTop:5,
+      marginLeft:180,
+    },
+    avatarPlaceholder: {
+        backgroundColor: '#ffffff',
+        width: 80,
+        height: 80,
+        borderRadius: 70, 
+        alignItems: 'center',
+        justifyContent: "center",
+        
+        
+       },
   });
 
 export default TutorHome;
