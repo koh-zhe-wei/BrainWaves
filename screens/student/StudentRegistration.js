@@ -19,7 +19,7 @@ import * as Device from 'expo-device';
 
 const StudentRegistration = () => {
 
-  
+  // fields taken from registration form 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
@@ -71,6 +71,7 @@ const StudentRegistration = () => {
     const createUserDocument = async (user,additionalData) => { 
       if (!user) return; 
       
+      //fields for documentation 
       const email = user.email; 
       const fullName = additionalData[0]; 
       const phoneNum = additionalData[1]; 
@@ -126,6 +127,8 @@ const StudentRegistration = () => {
       })();
     }, []);
   
+
+    // uploading profile pics to firebase storage 
     const pickImage = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -161,6 +164,8 @@ const StudentRegistration = () => {
       }
       )
     }
+
+    // push notification setup - retirieving expo push token 
     registerForPushNotificationsAsync = async () => {
       if (Device.isDevice) {
         const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);

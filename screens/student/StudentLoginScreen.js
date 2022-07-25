@@ -14,6 +14,8 @@ const StudentLoginScreen = () => {
 
   const navigation = useNavigation()
 
+  
+  //if user registers, then he is automatically signed in 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
