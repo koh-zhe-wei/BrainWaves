@@ -274,7 +274,7 @@ const TutorHome = () => {
                             >
                                 <View>
                                     <Text style={tw("text-xl font-bold")}>
-                                        {card.fullName}
+                                        {card.priceRange}
                                     </Text>
                                     <Text>Needs help in: {card.neededSubject}</Text>
                                 </View>
